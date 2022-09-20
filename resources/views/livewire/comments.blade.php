@@ -142,80 +142,94 @@
                 </form>
             <div class="head space-between px-3">
                 <h2>comments:</h2>
-                <div class="count">Count: {{count($comments)}}</div>
+                <div class="count">{{count($comments)}} comments | average: {{substr($avg_rate,0,3)}}</div>
             </div>
-        @foreach ($comments as $comment)
-        <div class="card w-100 comment" id="id_{{$comment->id}}" style="border: 1px solid rgba(0,0,0,0.5)">
-            <div class="card-header d-flex" style="justify-content: space-between">
-                <div class="name" style="color: var(--form-text)">
-                {{$comment->user->name}}
-                </div>
-                <div class="rate" style="color: var(--blue-color)">
-                    <span class="mx-1" style="color: var(--form-text)">
-                        {{$comment->created_at->diffForHumans()}}
-                    </span>
-                    Rate: {{$comment->rate}}
-                </div>
-            </div>
-            <div class="card-content px-4" style="color: var(--form-text);min-height: 70px;
-            color: var(--form-text);min-height: 70px;display: flex;justify-content: space-between;align-items: center;">
-                <div class="body">
-                    {{$comment->body}}
-                </div>
-                @auth
-                    @if(auth()->user()->id == $comment->id || auth()->user()->admin == 1)
-                    <div class="actions">
-                        <form action="" method="post" 
-                        wire:submit.prevent="delete_comment({{$comment->id}})">
-                        <button class="btn btn-sm btn-outline-danger" type="submit">delete</button>
-                        </form>
-                    @endif
-                @endauth
-                <button wire:click="get_data_report({{$comment->id}})" 
-                type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#report">
-                  report
-                </button>                        
-                <div wire:ignore.self class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="reportLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="reportLabel">Report</h5>
-                                  <button type="button" 
-                                  class="close btn btn-outline-danger btn-sm" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                    <div class="modal-body">
-                                    <h3>why you would to report</h3>
-
-                        <form action="" method="post" wire:submit.prevent="report_comment({{$comment->id}})">
-                            <div class="form-group">
-                                <select wire:model="report_reason" style="background: transparent;border:1op solid;color:var(--form-text)
-                                " name="" id="" class="form-control">
-                                    <option value=""></option>
-                                    <option value="bad content">cad content</option>
-                                    <option value="rasism">rasisam</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <input wire:model="report_reason_other" class="form-control" type="text" name="" id="" placeholder="other reasons">
-                            </div>
+            @foreach ($comments as $comment)
+            <div class="card  comment" id="id_{{$comment->id}}" style="border: 1px solid rgba(0,0,0,0.5)">
+                <div class="card-header d-flex" style="justify-content: space-between">
+                    <div class="name" style="color: var(--form-text)">
+                    {{$comment->user->name}}
                     </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">send</button>
-                      </div>
-                    </form>
-                                    
-
-                              </div>
-                            </div>
+                    <div class="rate" style="color: var(--blue-color)">
+                        <span class="mx-1" style="color: var(--form-text)">
+                            {{$comment->created_at->diffForHumans()}}
+                        </span>
+                        Rate: {{$comment->rate}}
+                    </div>
+                </div>
+                <div class="card-content px-4" style="color: var(--form-text);min-height: 70px;
+                color: var(--form-text);min-height: 70px;display: flex;justify-content: space-between;align-items: center;">
+                    <div class="body">
+                        {{$comment->body}}
+                    </div>
+                    @auth
+                        @if(auth()->user()->id == $comment->user_id || auth()->user()->admin == 1)
+                        <div class="actions" style="flex-wrap: nowrap;display: flex;gap: 10px;">
+                            <form action="" method="post" 
+                            wire:submit.prevent="delete_comment({{$comment->id}})">
+                            <button class="btn btn-sm btn-danger"  type="submit">delete</button>
+                            </form>
+                        @endif
+                    @endauth
+                    @auth
+                    @if (auth()->user()->id != $comment->user_id && !auth()->user()->admin == 1)
+                    <button wire:click="get_data_report({{$comment->id}})"
+                    type="button" class="btn btn-info btn-sm" 
+                    data-toggle="modal" data-target="#report">
+                      report
+                    </button>
+                    @endif
+     
+                    @else
+                    <button wire:click="get_data_report({{$comment->id}})"
+                        type="button" class="btn btn-info btn-sm" 
+                        data-toggle="modal" data-target="#report">
+                          report
+                    </button>   
+                    @endauth
+                 
+                    <div wire:ignore.self class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="reportLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="reportLabel">Report</h5>
+                                      <button type="button" 
+                                      class="close btn btn-outline-danger btn-sm" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                        <div class="modal-body">
+                                        <h3>why you would to report</h3>
+    
+                            <form action="" method="post" wire:submit.prevent="report_comment({{$comment->id}})">
+                                <div class="form-group">
+                                    <select wire:model="report_reason" 
+                                    style="background: transparent;border:1op solid;color:var(--form-text)
+                                    " name="" id="" class="form-control">
+                                        <option value=""></option>
+                                        <option value="bad content">cad content</option>
+                                        <option value="rasism">rasisam</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input wire:model="report_reason_other" class="form-control" type="text" name="" id="" placeholder="other reasons">
+                                </div>
+                        </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">send</button>
                           </div>
+                        </form>
+                                        
+    
+                                  </div>
+                                </div>
+                              </div>
+    
+                </div>
             </div>
-
             </div>
-        </div>
-        @endforeach
+            @endforeach
         </div>
         <script>
         window.addEventListener('addPost', event => { 

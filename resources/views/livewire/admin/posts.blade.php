@@ -5,8 +5,14 @@
     		<div class="count">[{{$posts->total()}}] <i class="zmdi zmdi-download"></i></div>
       </div>
       <div class="center">
-        <input type="search" name="search" id="search" wire:model="search" 
+        <input type="search" name="search" id="search" wire:model="search" placeholder="..search" 
         wire:input="search">
+        <select name="select" id="select" wire:model="category_filter">
+          <option value="{{null}}"></option>
+          @foreach ($categories as $cat)
+              <option value="{{$cat->id}}">{{$cat->name}}</option>
+          @endforeach
+        </select>
         <select wire:model="perPage" wire:change="filter" name="" id="">
           <option value="5">5</option>
           <option value="10">10</option>
@@ -15,11 +21,10 @@
         </select>
       </div>
       <div class="right">
-        <button  
-        type="button" class="btn btn-outline-primary btn-sm"
-         data-toggle="modal" data-target="#exampleModal" wire:click="resetInputs()">
+        <a href="{{route('post.create')}}"  
+        type="button" class="btn btn-outline-primary btn-sm">
           add
-        </button>
+        </a>
       </div>
     </header>
         {{-- add Post --}}
@@ -141,20 +146,23 @@
                               </textarea>
 
                         </div>
-                        <div class="form-group" @trix-blur="$dispatch('input',$description)">
+                        <div class="form-group" @trix-blur="$dispatch('input',$description_edit)">
 
                           <div> <!-- top-most div don't attach livewire-->
-                            <div class="form-group" wire:model.debounce.365ms="description" 
+                            <textarea style="visibility: hidden" id="body"
+                             wire:model="description_edit"  value="{{$description_edit}}"
+                                type="hidden" name="content">{{$description_edit}}</textarea>
+                            <div class="form-group"
                             wire:ignore>
                                 <label class="block text-gray-700 text-sm text-xl font-bold mb-2"
                                  for="order">
                                   description
                                 </label>
-                                <input id="body" wire:model="description_edit" 
-                                 wire:change="$emit('updatePost')"
-                                value="{{$description}}" 
-                                type="hidden" name="content">
-                                <trix-editor wire:model="description_edit"
+                                
+                                <trix-editor style="color: white;
+                                border: 1px solid white !important;
+                                min-height: 300px;
+                                outline: none;" wire:model="description_edit"
                               
                                 input="body"></trix-editor>
                                 @error('description')
@@ -207,7 +215,8 @@
                     </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button wire:loading.attr="disabled" type="submit" class="btn btn-primary">update</button>
+                        <button wire:loading.attr="disabled"
+                         type="submit" class="btn btn-primary">update</button>
                       </div>
                 </form>
               </div>
@@ -247,7 +256,7 @@
         <td>{{$post->category->name}}</td>
         <td>
           @if (!empty($post->image))
-              <img class="mt-1" src="{{asset('storage/'.$post->image)}}" 
+              <img class="mt-1" src="{{asset('storage/images/'.$post->image)}}" 
               style="width: 130px;height: auto;border-radius: 5px" alt="">
           @else
           no image
@@ -258,10 +267,10 @@
           <span style="display: flex;flex-wrap: nowrap;justify-content: center;gap: 20px">
                             
             <span style="display: flex;align-items: center;gap: 10px;height: 100%">
-                <button data-toggle="modal" data-target="#editModal"
-                 wire:click="editData({{$post->id}})" type="submit" class="btn btn-outline-primary btn-sm">
+                <a href="{{route('post.admin.update',[$post->id])}}" type="submit"
+                  class="btn btn-outline-primary btn-sm">
                     edit
-                </button>
+                </a>
             </span>
             <form method="post" wire:submit.prevent="deletePost({{$post->id}})">
                 @csrf
@@ -303,29 +312,14 @@
 //     }
 //   }
 // });
+var element = document.querySelector("trix-editor")
 
-function summernote(value) {
-  $('#editModalArea').summernote('code',value)  
-$('#editModalArea').summernote({
-      tabsize: 2,
-        height: 120,
-        toolbar: [
-          ['style', ['style']],
-          ['font', ['bold', 'underline', 'clear']],
-          ['color', ['color']],
-          ['para', ['ul', 'ol', 'paragraph']],
-          ['table', ['table']],
-          ['insert', ['link', 'picture', 'video']],
-          ['view', ['fullscreen', 'codeview', 'help']]
-        ],
-  callbacks: {
-    onChange: function(contents, $editable) {
-      console.log('onChange:', contents, $editable);
-      @this.set('description',contents)
-    }
-  }
-});
+var document = element.editor.getDocument()
+element.oninput = () => {
+  @this.set('description',element.value)
+  console.log(element.value)
 }
+document.toString()  // is a JavaScript string
 // summernote()
   </script>
     <script>

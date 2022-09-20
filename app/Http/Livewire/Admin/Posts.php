@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -17,6 +18,7 @@ class Posts extends Component
     protected $paginationTheme = 'bootstrap';
     public $title = null;
     public $image;
+    public $category_filter = null;
     public $old_edit_image;
     public $new_edit_image;
     public $slug = null;
@@ -29,9 +31,26 @@ class Posts extends Component
     public $perPage = 5;
     public function render()
     {
-        $posts = Post::latest()->where('title','like',"%".$this->search."%")
-        ->with('category')->paginate($this->perPage);
-        return view('livewire.admin.posts',compact('posts'));
+        if (empty($this->category_filter)) {
+            $posts = Post::latest()->where(function ($q)
+            {
+                $q->where('title','like',"%".$this->search."%")
+                ->orWhere('description','like',"%".$this->search."%");
+            })
+        ->with('category')
+        ->paginate($this->perPage);
+        }else{
+            $this->resetPage();
+            $posts = Post::latest()->whereBelongsTo(Category::findOrFail($this->category_filter))
+            ->where(function ($q)
+            {
+                $q->where('title','like',"%".$this->search."%")
+                ->orWhere('description','like',"%".$this->search."%");
+            })->with('category')
+            ->paginate($this->perPage);
+        }
+        $categories = Category::all();
+        return view('livewire.admin.posts',compact('posts','categories'));
     }
     public function resetInputs()
     {
@@ -134,10 +153,9 @@ class Posts extends Component
             }
             }
             $new_desc = array(
-                'description' => $this->description_edit
+                'description' => $this->description
             );
             $final_data = array_merge($final_data,$new_desc);
-            dd($final_data);
             $category->update($final_data);
             $category->save();
             $this->dispatchBrowserEvent('alert', 

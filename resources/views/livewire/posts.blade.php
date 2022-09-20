@@ -18,13 +18,15 @@
                 @if (!empty($post->image))
                 <div class="course_card_img">
                     <img 
-                     src="{{asset('storage/'.$post->image)}}" alt="course"/>
+                     src="{{asset('storage/images/'.$post->image)}}" alt="course"/>
                     </div>
+
                 @else
                     <div class="course_card_img no-image">
                         no image
                     </div>
                 @endif  
+
               <div class="course_card_content">
                 <h4 style="color: var(--blue-color);background: transparent;border-bottom: unset;"
                  class="title">{{$post->title}}</h4>

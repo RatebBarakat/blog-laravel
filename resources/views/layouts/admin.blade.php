@@ -12,7 +12,11 @@
     <title>@yield('title')</title>
     @yield('css')
     <script defer src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<style>
+    input[type="search"]{
+        margin-bottom: 10px;
+    }
+</style>
     @livewireStyles
 
   </head>

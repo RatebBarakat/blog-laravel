@@ -125,7 +125,7 @@ nav li a:not(.navbar-brand):hover{
 }
 .card .card-header,.title{
     border-bottom: 1px solid lightgray;
-    background: var(--main-color);
+    background: var(--title-color);
     min-height: 50px;
     display: flex;
     justify-content: center;align-items: center;
@@ -134,7 +134,7 @@ nav li a:not(.navbar-brand):hover{
     font-weight: bold;
     text-transform: capitalize;
     border-bottom: 1px solid lightgray;
-    color: white;
+    color: var(--blue-color);
 }
 input{
     color: var(--form-text) !important;
@@ -231,8 +231,8 @@ input:hover,input:focus{
     --bs-btn-disabled-border-color: var(--blue-color) !important;
     --bs-gradient: none;
   }
-  .btn:not(.btn-primary):not(nav *):not(.btn-outline-danger),
-   :not(.btn-check) + .btnno:not(.btn-primary):not(.btn-outline-danger):not(nav *):hover {
+  .btn:not(.btn-primary):not(nav *):not(.btn-outline-danger):not(.btn-danger),
+   :not(.btn-check) + .btnno:not(.btn-primary):not(.btn-danger):not(.btn-outline-danger):not(.btn-danger):not(nav *):hover {
     color: var(--body-color) !important;
     background-color: var(--blue-color) !important;
     border-color: var(--blue-color) !important;

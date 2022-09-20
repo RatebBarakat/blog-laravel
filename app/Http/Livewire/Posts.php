@@ -11,14 +11,14 @@ class Posts extends Component
     use WithPagination;
     public $category_slug;
     public $search = null;
-    public $loaditem = 3;
+    public $loaditem = 10;
     public function mount($category_slug)
     {
         $this->category_slug = $category_slug;
     }
     public function loadmore()
     {
-        $this->loaditem+=3;
+        $this->loaditem+=10;
     }
     public function render()
     {

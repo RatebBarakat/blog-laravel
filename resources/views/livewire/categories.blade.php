@@ -5,7 +5,7 @@
     		<div class="count">[{{$categories->total()}}] <i class="zmdi zmdi-download"></i></div>
       </div>
       <div class="center">
-        <input type="search" name="search" id="search" wire:model="search" 
+        <input type="search" name="search" id="search" wire:model="search" placeholder="..search"  
         wire:input="search">
         <select wire:model="perPage" name="" id="">
           <option value="5">5</option>

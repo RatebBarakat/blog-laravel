@@ -40,6 +40,13 @@ Route::prefix('admin')->middleware(['admin','preventBack'])->group(function ()
    Route::get('/posts',[AdminController::class,'posts'])->name('admin.posts'); 
    Route::get('/comment-reports',[AdminController::class,'comment_reports'])
    ->name('admin.comment.report'); 
+
+   Route::get('/post/{post_id}/edit',[PostController::class,'edit'])
+    ->name('post.admin.edit');
+    Route::post('/post/{post_id}/edit',[PostController::class,'update'])
+    ->name('post.admin.update');
+    Route::post('/post/store',[PostController::class,'store'])->name('post.store');
+    Route::resource('post',PostController::class);
 });
 //endadmin
 Route::get('/category/{category_id}',[CategoryController::class,'displayProducts'])

@@ -57,9 +57,10 @@ input:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: lightgrey;
-    background-color: gray;
-    font-size: 22px;
+    color: gray;
+    background-color: lightgrey;
+    font-size: 27px;
+
 }
 .course_card_footer{
     border-top: 1px solid lightgray;
@@ -102,7 +103,7 @@ input:focus {
       @if (!empty($post->image))
       <div class="course_card_img">
           <img 
-           src="{{asset('storage/'.$post->image)}}" alt="course"/>
+           src="{{asset('storage/images/'.$post->image)}}" alt="course"/>
           </div>
       @else
           <div class="course_card_img no-image">

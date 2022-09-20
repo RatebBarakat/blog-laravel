@@ -21,7 +21,7 @@ class CommentReport extends Component
     public function render()
     {
         $comment_report = AdminMessage::whereNotNull('comment_id')
-        ->where('body','like','%'.$this->search.'%')->with('comment')->paginate(10);
+        ->where('body','like','%'.$this->search.'%')->with('comment','user')->paginate(10);
 
         return view('livewire.admin.comment-report',compact('comment_report'));
     }

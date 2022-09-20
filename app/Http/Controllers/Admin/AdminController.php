@@ -16,7 +16,8 @@ class AdminController extends Controller
         $categories = Category::all();
         $posts = Post::all();
         $users = User::all();
-        return view('dashboard',compact('categories','users','posts'));
+        $comment_report_count = AdminMessage::whereNotNull('comment_id')->count();
+        return view('dashboard',compact('categories','users','posts','comment_report_count'));
     }
     public function categories()
     { 
@@ -24,7 +25,8 @@ class AdminController extends Controller
     }
     public function posts()
     {
-        return view('admin.posts');
+        $posts = Post::with('category')->paginate(10);
+        return view('admin.posts',compact('posts'));
     }
     public function comment_reports()
     {

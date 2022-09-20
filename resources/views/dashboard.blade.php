@@ -37,14 +37,18 @@
                     </div>
                 </div>
             </a>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-                <div class="card red">
-                    <div class="title">new customers</div>
-                    <i class="zmdi zmdi-download"></i>
-                    <div class="value">3</div>
-                    <div class="stat"><b>13</b>% decrease</div>
+            <a class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4" href="{{route('admin.comment.report')}}">
+                <div >
+                    <div class="card red">
+                        <div class="title">posts</div>
+                        <i class="zmdi zmdi-download"></i>
+                        <div class="value">{{$comment_report_count}}</div>
+                        <div class="stat"><b>13</b>% decrease</div>
+                    </div>
                 </div>
-            </div>
+            </a>
+
+            
         </div>
     </div>
     {{-- <div class="projects mb-4">

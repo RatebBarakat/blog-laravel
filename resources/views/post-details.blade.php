@@ -7,6 +7,25 @@
     min-height: unset !important;
     letter-spacing: initial !important;
 }
+.description *{
+  overflow-wrap: break-word;
+  text-align: initial;
+  color: var(--form-text);
+}
+.description table{
+  width: 100%;
+  margin: auto;
+  border-color: var(--form-text);
+  color: var(--form-text);
+}
+.description th,td,tr{
+  border: 1px solid var(--form-text);
+  text-align: center !important;
+  padding: 3px !important;
+}
+.description h1,h2,h3{
+  color: var(--blue-color) !important
+}
 .comment.active{
   box-shadow: 0 0 10px 4px red;
   opacity: 1 !important;
@@ -239,7 +258,7 @@ textarea:focus{
         <div class="data-container">
             <div class="image">
                 @if (!empty($post->image))
-                    <img src="{{asset('storage/'.$post->image)}}" alt="" srcset="">
+                    <img class="my-4" src="{{asset('storage/images/'.$post->image)}}" alt="" srcset="">
                 @else
                     <div class="no_image my-2">
                         No image
@@ -259,7 +278,8 @@ textarea:focus{
             </div>
             </div>
         </div>
-        <p style="opacity: .8" class="text-center pt-2">{!!$post->description!!}</p>
+        <div style="opacity: .8" class="text-center pt-2 px-3 description"
+        >{!!$post->description!!}</div>
 
     </div>
     @livewire('comments', ['post_id' => $post->id])

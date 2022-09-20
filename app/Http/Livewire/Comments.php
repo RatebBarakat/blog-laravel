@@ -56,7 +56,6 @@ class Comments extends Component
                 $this->dispatchBrowserEvent('alert', 
                 ['type' => 'success',  'message' => 'comment added successfully']);
                 $this->resetInputs();
-                return redirect(request()->header('Referer'));
                 $this->update_comments();
                } else {
                 $this->dispatchBrowserEvent('alert', 
