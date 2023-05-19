@@ -15,7 +15,7 @@ This repository contains the source code for a blog website built using the Lara
 
 To set up the project locally, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/blog-laravel.git`
+1. Clone the repository: `git clone https://github.com/RatebBarakat/blog-laravel.git`
 2. Install dependencies: `composer install`
 3. Configure the database in the `.env` file.
 4. Run database migrations: `php artisan migrate`
